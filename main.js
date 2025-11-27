@@ -126,6 +126,7 @@ function updateGameArea() {
     }
     pelihahmo.update();
     ovi.update();
+    //Jos piirrät jotain updatella, piirrä se tämän pimeys tekstin yläpuolelle. Muuten se piirtyy pimeän alueen yläpuolelle ja näkyy kartassa.
     if(pimeys == true) {
         var fog = createFog(pelihahmo);
         pelialue.context.drawImage(fog, 0, 0);
