@@ -20,7 +20,7 @@ function aloitapeli(){
     
 }
 
-//tämä funktio tekee pelialueen + lisää interval koodilla frameraten joka on 20ms window addeventlistener lisää nuolinäppäimet liikumiseen//
+//tämä funktio tekee pelialueen + lisää interval koodilla frameraten joka on 20ms. window addeventlistener lisää nuolinäppäimet liikumiseen//
 var pelialue = {
     canvas : document.createElement("canvas"),
     aloita : function() {
@@ -47,7 +47,7 @@ var pelialue = {
 }
 
 //luo komponentteja kuten pelihahmon sekä seinät. newpos liikuttaa pelaajaa/komponentteja ja update piirtää ne kenttään//
-//craswith komento tarkistaa kyseisen objektin (this) sekä otherobj eli seinän osumista. Sille voi antaa mitkä tahansa kaksi asiaa ja palauttaa joko 
+//craswith komento tarkistaa kyseisen objektin (this) sekä otherobj esim vaikka seinän osumista. Sille voi antaa mitkä tahansa kaksi asiaa ja palauttaa joko 
 // false eli osumista ei tapahtunut tai true eli osuminen tapahtuu. Jos on true, se palauttaa pelaajan takaisin omalle paikalle. Se tarkistaa joka kerta kun liikut//
 //kutsumalla funktiota voi luoda minkä tahansa objektin antamalla sille objektin leveyden, pituuden, värin, x-kordinaatin ja y-kordinaatin
 function komponentti(width, height, color, x, y) {
@@ -133,7 +133,6 @@ function updateGameArea() {
 
 }   
 
-
 //peli tarkistaa nyt onko avainloydetty true. Jos avainloydetty on true ja pelaaja osuu oveen, funktiota voitto kutsutaan ja pelialue pysähtyy
 //tällä funktiolla voit tehdä voittoruudun
 function voitto(){
@@ -142,9 +141,7 @@ function voitto(){
     kavelyefekti.stop();
 }
 
-
-
-//tämä koodi lisää array(seinat) jokaisen seinän jonka yläpuolella oleva koodi lisää kentään
+//tämä koodi lisää array(seinat) jokaisen seinän jonka yläpuolella oleva koodi updategamearea lisää kentään
 function luoseinat(){
     seinat.push(new komponentti(10, 710, "black", 0, 0));
     seinat.push(new komponentti(1140, 10, "black", 0, 0));
