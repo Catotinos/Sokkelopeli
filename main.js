@@ -111,6 +111,8 @@ function updateGameArea() {
     }
     if(pelihahmo.crashWith(avain)){
         avainloydetty = true;
+        avain.x = 0;
+        avain.y = 0;
         avainefekti.play();
         }
     if(avainloydetty == false) {
