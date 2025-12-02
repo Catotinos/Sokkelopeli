@@ -1,13 +1,19 @@
 pelialueendiv = document.getElementById("peli");
+document.getElementById("aloita").addEventListener("click", aloitapeli)
+document.getElementById("lopeta").addEventListener("click", lopetapeli)
 
 var pelihahmo;
+var vihollinen;
+var ekaLiike = true;
+var ekatOhi = false;
 var seinat = [];
 var avainloydetty = false;
 avainefekti = new sound("avainloydetty.mp3", false);
 voittoefekti = new sound("voittoefekti.mp3", false);
 kavelyefekti = new sound("kavely.mp3", true);
+
 //jos haluat nähdä pelikentän testauksessa laita pimeys = false
-var pimeys = true;
+var pimeys = false;
 
 
 // tätä funktiota kutsumalla peli alkaa, se luo pelihahmon ja kutsuu luoseinät funktiota joka lisää seinat var seinät listaan//
@@ -15,9 +21,13 @@ function aloitapeli(){
     pelihahmo = new komponentti(20, 20, "green", 25, 30);
     luoseinat();
     avain = new komponentti(10, 10, "yellow", 990, 530);
+    vihollinen = new komponentti(50, 50, "red", 155, 505)
     ovi = new komponentti(10, 60, "brown", 1120, 10);
     pelialue.aloita();
-    
+}
+
+function lopetapeli() {
+    pelialue.stop();
 }
 
 //tämä funktio tekee pelialueen + lisää interval koodilla frameraten joka on 20ms. window addeventlistener lisää nuolinäppäimet liikumiseen//
@@ -64,8 +74,8 @@ function komponentti(width, height, color, x, y) {
     }
     this.newPos = function() {
         this.x += this.speedX;
-        this.y += this.speedY;    
- 
+        this.y += this.speedY;
+
     }
     this.crashWith = function(otherobj) {
         var myleft = this.x;
@@ -126,15 +136,66 @@ function updateGameArea() {
             pelihahmo.y -= pelihahmo.speedY;
         }
     }
+    if (pelihahmo.crashWith(vihollinen)) {
+        pelihahmo.x -= pelihahmo.speedX;
+        pelihahmo.y -= pelihahmo.speedY;
+        havio();
+    }
+
+    vihollinen.newPos();
+       
+    // Ohjelmoidaan vihollisen liike (suorakulmion kiertäminen)
+    for (i = 0; i < seinat.length; i += 1) {
+        // Annetaan aloitussuunta ja liike
+        if (ekaLiike == true) {
+            vihollinen.speedY = -1
+            // Kun ensimmäinen kääntymispiste on saavutettu, jatketaan oikealle
+            if (vihollinen.y == 365) {
+                vihollinen.speedY = 0
+                vihollinen.speedX = 1 
+                // Nollataan ekaLiike
+                ekaLiike = false
+                }
+            }
+        }
+
+        // Edetään oikealle
+        if (ekaLiike == false) {
+            // Kääntymispiste saavutettu, lähdetään alaspäin
+            if (vihollinen.x == 365) {
+                vihollinen.speedX = 0
+                vihollinen.speedY = 1
+                // Ensimmäiset 2 käännöstä tehty
+                ekatOhi = true
+            }
+            
+            if (ekatOhi == true) {
+                // Alimmainen piste saavutettu, käännytään vasemmalle
+                if (vihollinen.y == 505) {
+                    vihollinen.speedY = 0
+                    vihollinen.speedX = -1
+                    }
+                    // Aloituspisteessä
+                    if (vihollinen.x == 155) {
+                        vihollinen.speedY = 0
+                        vihollinen.speedX = 0
+                        // Nollataan ekaLiike ja ekatOhi --> aloitetaan kierros uudestaan
+                        ekaLiike = true
+                        ekatOhi = false
+                    }
+            }
+        }
+    
     pelihahmo.update();
     ovi.update();
+    vihollinen.update();
     //Jos piirrät jotain updatella, piirrä se tämän pimeys tekstin yläpuolelle. Muuten se piirtyy pimeän alueen yläpuolelle ja näkyy kartassa.
     if(pimeys == true) {
         var fog = createFog(pelihahmo);
         pelialue.context.drawImage(fog, 0, 0);
     }
 
-}   
+}
 
 //peli tarkistaa nyt onko avainloydetty true. Jos avainloydetty on true ja pelaaja osuu oveen, funktiota voitto kutsutaan ja pelialue pysähtyy
 //tällä funktiolla voit tehdä voittoruudun
@@ -143,6 +204,12 @@ function voitto(){
     voittoefekti.play();
     kavelyefekti.stop();
 }
+
+function havio() {
+    pelialue.stop();
+    kavelyefekti.stop();
+}
+
 
 //tämä koodi lisää array(seinat) jokaisen seinän jonka yläpuolella oleva koodi updategamearea lisää kentään
 function luoseinat(){

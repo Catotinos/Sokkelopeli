@@ -6,6 +6,9 @@ body {
     font-family: roboto; 
 }
 
+.ylaosa {
+    height: 750px;
+}
 
 #peli {
     margin-top:20px;
@@ -18,4 +21,20 @@ body {
 
 canvas {
     background-color: rgb(71, 71, 71);
+}
+
+#napit {
+    display: block;
+    text-align: center;
+}
+
+#napit button {
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#napit button:hover {
+    background-color: rgb(0, 255, 8);
 }
