@@ -6,8 +6,8 @@ body {
     font-family: roboto; 
 }
 
-.ylaosa {
-    height: 750px;
+#ylaosa {
+    height: 0px;
 }
 
 #peli {
@@ -37,4 +37,28 @@ canvas {
 
 #napit button:hover {
     background-color: rgb(0, 255, 8);
+}
+
+#ohjeet {
+    font-size:1.3em;
+    font-family:'Trebuchet MS';
+    margin-top:20px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#havio {
+    font-size:5em;
+    color: white;
+    position:absolute;
+    display: none;
+}
+#voitto {
+    font-size:5em;
+    color: white;
+    position:absolute;
+    display: none;
 }

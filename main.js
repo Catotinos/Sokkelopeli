@@ -1,6 +1,6 @@
 pelialueendiv = document.getElementById("peli");
 document.getElementById("aloita").addEventListener("click", aloitapeli)
-document.getElementById("lopeta").addEventListener("click", lopetapeli)
+document.getElementById("lopeta").addEventListener("click", restart)
 
 var pelihahmo;
 var vihollinen;
@@ -13,11 +13,14 @@ voittoefekti = new sound("voittoefekti.mp3", false);
 kavelyefekti = new sound("kavely.mp3", true);
 
 //jos haluat nähdä pelikentän testauksessa laita pimeys = false
-var pimeys = false;
+var pimeys = true;
 
 
 // tätä funktiota kutsumalla peli alkaa, se luo pelihahmon ja kutsuu luoseinät funktiota joka lisää seinat var seinät listaan//
 function aloitapeli(){
+    document.getElementById("ohjeet").style.display = "none";
+    document.getElementById("aloita").style.display = "none";
+    document.getElementById("ylaosa").style.height = "750px";
     pelihahmo = new komponentti(20, 20, "green", 25, 30);
     luoseinat();
     avain = new komponentti(10, 10, "yellow", 990, 530);
@@ -26,9 +29,6 @@ function aloitapeli(){
     pelialue.aloita();
 }
 
-function lopetapeli() {
-    pelialue.stop();
-}
 
 //tämä funktio tekee pelialueen + lisää interval koodilla frameraten joka on 20ms. window addeventlistener lisää nuolinäppäimet liikumiseen//
 var pelialue = {
@@ -137,8 +137,8 @@ function updateGameArea() {
         }
     }
     if (pelihahmo.crashWith(vihollinen)) {
-        pelihahmo.x -= pelihahmo.speedX;
-        pelihahmo.y -= pelihahmo.speedY;
+        pelihahmo.x = -100;
+        pelihahmo.y = -100;
         havio();
     }
 
@@ -202,12 +202,15 @@ function updateGameArea() {
 function voitto(){
     pelialue.stop();
     voittoefekti.play();
+    document.getElementById("voitto").style.display = "block";
     kavelyefekti.stop();
 }
 
 function havio() {
     pelialue.stop();
+    document.getElementById("havio").style.display = "block"
     kavelyefekti.stop();
+
 }
 
 
@@ -283,3 +286,25 @@ function sound(src, loops) {
     this.sound.pause();
   }
 }
+
+function restart(){
+    document.getElementById("havio").style.display = "none";
+    document.getElementById("voitto").style.display = "none";
+    clearInterval(pelialue.interval)
+    pelialue.interval = setInterval(updateGameArea, 20)
+    pelihahmo.speedX = 0
+    pelihahmo.speedY = 0
+    pelihahmo.x = 25
+    pelihahmo.y = 30
+    avainloydetty = false
+    ekatOhi = false
+    ekaLiike = true
+    ovi.x = 1120
+    ovi.y = 10
+    avain. x = 990
+    avain.y = 530
+    vihollinen.x = 155
+    vihollinen.y = 505
+    vihollinen.speedX = 0
+    vihollinen.speedY = 0
+    }
